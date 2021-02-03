@@ -25,6 +25,6 @@ namespace Pente
             InitializeComponent();
         }
 
-        // THIS IS TEST 1
+        // THIS IS TEST 12
     }
 }
