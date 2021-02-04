@@ -20,9 +20,33 @@ namespace Pente
     /// </summary>
     public partial class MainWindow : Window
     {
+        PlayWindow playWindow;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void playBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            playWindow = new PlayWindow(this,4);
+            playWindow.Show();
+        }
+
+        private void quitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(playWindow != null)
+                playWindow.Close();
         }
 
         // THIS IS TEST 12

@@ -6,4 +6,20 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\cross.png" />
+    <None Remove="Resources\crossBlack.png" />
+    <None Remove="Resources\crossHover.png" />
+    <None Remove="Resources\crossWhite.png" />
+    <None Remove="Resources\icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\cross.png" />
+    <Resource Include="Resources\crossBlack.png" />
+    <Resource Include="Resources\crossHover.png" />
+    <Resource Include="Resources\crossWhite.png" />
+    <Resource Include="Resources\icon.png" />
+  </ItemGroup>
+
 </Project>
