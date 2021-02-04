@@ -18,6 +18,9 @@ namespace Pente
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
+    // test comment (Damon)
     public partial class MainWindow : Window
     {
         PlayWindow playWindow;
