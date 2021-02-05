@@ -49,6 +49,7 @@
                 <MenuItem Header="Pause" x:Name="Pause" Click="Pause_Click"/>
             </MenuItem>
         </Menu>
+        
         <Grid x:Name="grid" Height="944" ShowGridLines="False">
 
         </Grid>

@@ -27,8 +27,8 @@ namespace Pente
             this.color = color;
 
         }
-
     }
+
     public partial class PlayWindow : Window
     {
         Window mainWindow;
@@ -39,19 +39,27 @@ namespace Pente
         private const int wDs = WIDTH / SCALE;
         private const int hDs = HEIGHT / SCALE;
         public int maxPixel = hDs;
-        Image image = new Image();
         
 
         Cell[,] matrix = new Cell[hDs, wDs];
 
-        public PlayWindow(Window sentWindow, int players)
+     
+        public PlayWindow( int players, Window sentWindow=null)
         {
             mainWindow = sentWindow;
             InitializeComponent();
+            setupBoard();
 
-            // Getting image for buttons to use
+        }
 
+        public PlayWindow()
+        {
+            InitializeComponent();
+            setupBoard();
+        }
 
+        public void setupBoard()
+        {
 
             // Adding rows and columns in the grid
             for (int i = 0; i < HEIGHT / SCALE; i++)
@@ -138,6 +146,11 @@ namespace Pente
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        public int testMeth()
+        {
+            return 1;
         }
     }
 }

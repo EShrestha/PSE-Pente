@@ -1,0 +1,2 @@
+﻿ 1) Test for a tria: 3 pieces in a row any direction
+ 2) Test for Tesera:
