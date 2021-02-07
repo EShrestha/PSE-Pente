@@ -37,19 +37,23 @@ namespace Pente
         private const int SCALE = 39;
         private const int WIDTH = 741;
         private const int HEIGHT = 741;
-        private const int wDs = WIDTH / SCALE;
-        private const int hDs = HEIGHT / SCALE;
+        public const int wDs = WIDTH / SCALE;
+        public const int hDs = HEIGHT / SCALE;
         public int maxPixel = hDs;
         public byte turn = 1;
         BoardLogic boardLogic = new BoardLogic();
 
-        Cell[,] matrix = new Cell[hDs, wDs];
+        Board b = new Board(hDs, wDs);
+        public Cell[,] matrix;
+        //public Cell[,] matrix = new Cell[hDs, wDs];
 
      
         public PlayWindow( int players, Window sentWindow=null)
         {
             mainWindow = sentWindow;
             numOfPlayers = players;
+            matrix = b.getBoard();
+
             InitializeComponent();
             setupBoard();
 
@@ -57,6 +61,7 @@ namespace Pente
 
         public PlayWindow()
         {
+            matrix = b.getBoard();
             InitializeComponent();
             setupBoard();
         }
@@ -151,8 +156,8 @@ namespace Pente
                     Stretch = Stretch.Fill,
                 };
 
-                if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,5)) { MessageBox.Show($"{color} won the game!!!"); } // Checkin for tria;
-                else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesra!"); } // Checkin for tria;
+                if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,5)) { MessageBox.Show($"{color} won the game!!!"); } // Checkin for game win;
+                else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesera!"); } // Checkin for tesera;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,3)) { MessageBox.Show($"{color} has a tria!"); } // Checkin for tria;
                 matrix[row, col].btn.IsEnabled = false;
             }

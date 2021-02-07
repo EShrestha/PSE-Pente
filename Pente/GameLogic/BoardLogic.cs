@@ -93,7 +93,30 @@ namespace Pente.GameLogic
         }
 
 
+        public bool isCapture(Cell[,] matrix, int startRow, int startCol, int color)
+        {
+            return true;
+        }
+
+
+        public bool aiMakeMove(ref Cell[,] matrix)
+        {
+
+
+
+
+            return true; // should be false
+        }
+
+
+
+
+
+
+
 
 
     }
+
+
 }

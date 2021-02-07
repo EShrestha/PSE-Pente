@@ -32,7 +32,7 @@ namespace Pente
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            playWindow = new PlayWindow(4, this);
+            playWindow = new PlayWindow(2, this);
             playWindow.Show();
         }
 
