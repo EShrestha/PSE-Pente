@@ -9,9 +9,10 @@
         Icon="Resources\icon.png"
         Closing="Window_Closing"
         Closed="Window_Closed"
-        Height="1000"
-        Width="1000"
-        ResizeMode="NoResize">
+        Height="830"
+        Width="751"
+        ResizeMode="NoResize"
+        Background="Wheat">
 
     <Window.Resources>
         <Style x:Key="btnStyle1" TargetType="Button">
@@ -20,13 +21,9 @@
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0 0"/>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="Transparent"/>
-                    <Setter Property="Grid.Background" Value="Transparent"/>
-                    <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Button">
@@ -34,6 +31,9 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="Foreground" Value="Transparent"/>
+                    <Setter Property="Grid.Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent"/>
 
                 </Trigger>
             </Style.Triggers>
@@ -42,17 +42,25 @@
     </Window.Resources>
 
 
-    <StackPanel Height="1000">
-        <Menu DockPanel.Dock="Top" Grid.Row="0">
+    <StackPanel Height="830" VerticalAlignment="Top">
+        <!--<Menu DockPanel.Dock="Top" Grid.Row="0">
             <MenuItem Header="Option">
                 <MenuItem Header="Run" x:Name="Run" Click="Run_Click"/>
                 <MenuItem Header="Pause" x:Name="Pause" Click="Pause_Click"/>
             </MenuItem>
-        </Menu>
-        
-        <Grid x:Name="grid" Height="944" ShowGridLines="False">
+        </Menu>-->
+
+        <!--<Grid x:Name="grid" Height="944" ShowGridLines="False" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">-->
+        <Grid x:Name="grid" Height="741" Width="741" ShowGridLines="False" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Top">
 
         </Grid>
+        
+        
+        <StackPanel Orientation="Horizontal" Height="79" VerticalAlignment="Top">
+            <TextBlock Background="Black">hello</TextBlock>
+            <TextBlock VerticalAlignment="Top" Height="50" Width="400" Background="Black">sfwehifuhwefhiowefhiwoefwifh</TextBlock>
+            
+        </StackPanel>
       
     </StackPanel>
 </Window>
