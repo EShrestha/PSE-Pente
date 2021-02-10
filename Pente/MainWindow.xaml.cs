@@ -52,11 +52,6 @@ namespace Pente
                 playWindow.Close();
         }
 
-        public int X()
-        {
-            return 1;
-        }
 
-        // THIS IS TEST 12
     }
 }

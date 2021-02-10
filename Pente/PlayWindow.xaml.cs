@@ -28,6 +28,18 @@ namespace Pente
             this.color = color;
 
         }
+
+        public void clearCell()
+        {
+            this.color = 0;
+            btn.Content = new Image
+            {
+                Source = new BitmapImage(new Uri("/Resources/cross.png", UriKind.RelativeOrAbsolute)),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Stretch = Stretch.Fill,
+            };
+        }
     }
 
     public partial class PlayWindow : Window
@@ -160,8 +172,11 @@ namespace Pente
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesera!"); } // Checkin for tesera;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,3)) { MessageBox.Show($"{color} has a tria!"); } // Checkin for tria;
                 matrix[row, col].btn.IsEnabled = false;
+                matrix[0, 1].clearCell();
             }
         }
+
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

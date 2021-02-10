@@ -185,7 +185,7 @@ namespace Pente.NUnitTest
             int startCol = 3;
 
             // Act
-            bool isCap = bl.isCapture(mat, startRow, startCol, 1);
+            bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
             Assert.AreEqual(true, isCap);
@@ -205,11 +205,12 @@ namespace Pente.NUnitTest
             int startCol = 0;
 
             // Act
-            bool isCap = bl.isCapture(mat, startRow, startCol, 1);
+            bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
             Assert.AreEqual(true, isCap);
         }
+
         [Test]
         public void isCapture_capDiagonal_true()
         {
@@ -225,7 +226,7 @@ namespace Pente.NUnitTest
             int startCol = 3;
 
             // Act
-            bool isCap = bl.isCapture(mat, startRow, startCol, 1);
+            bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
             Assert.AreEqual(true, isCap);
