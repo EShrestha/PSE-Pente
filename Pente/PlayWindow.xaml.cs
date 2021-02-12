@@ -172,7 +172,7 @@ namespace Pente
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesera!"); } // Checkin for tesera;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,3)) { MessageBox.Show($"{color} has a tria!"); } // Checkin for tria;
                 matrix[row, col].btn.IsEnabled = false;
-                matrix[0, 1].clearCell();
+               
             }
         }
 

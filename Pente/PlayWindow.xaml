@@ -56,11 +56,11 @@
         </Grid>
         
         
-        <StackPanel Orientation="Horizontal" Height="79" VerticalAlignment="Top">
+        <!--<StackPanel Orientation="Horizontal" Height="79" VerticalAlignment="Top">
             <TextBlock Background="Black">hello</TextBlock>
             <TextBlock VerticalAlignment="Top" Height="50" Width="400" Background="Black">sfwehifuhwefhiowefhiwoefwifh</TextBlock>
             
-        </StackPanel>
+        </StackPanel>-->
       
     </StackPanel>
 </Window>
