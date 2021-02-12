@@ -45,12 +45,8 @@ namespace Pente.GameLogic
                     if(matrix[startRow, startCol+1].color == pieceColor && matrix[startRow, startCol - 1].color == pieceColor)
                     {
                         // Middle, any where on the board
-                        try { if(matrix[startRow, startCol - 2].color == 0){ return true; } } // if 2 left of the piece is 0 return true
-                        catch { if (matrix[startRow, startCol + 2].color == 0) { return true; } } // if checking 2 left of the piece is error means it is on the left edge so check right
-
-                        // Same as above but reflected horizontally
-                        try { if (matrix[startRow, startCol + 2].color == 0) { return true; } } 
-                        catch { if (matrix[startRow, startCol - 2].color == 0) { return true; } }
+                        try { if(matrix[startRow, startCol - 2].color == 0 && matrix[startRow, startCol + 2].color == 0) { return true; } } // if 2 left of the piece is 0 return true
+                        catch { if (matrix[startRow, startCol + 2].color == 0 && matrix[startRow, startCol - 2].color == 0) { return true; } } // if checking 2 left of the piece is error means it is on the left edge so check right
                     }
                     // Means piece is not the middle piece
                     else
@@ -58,20 +54,17 @@ namespace Pente.GameLogic
                         // Means it is the right piece
                         if(matrix[startRow, startCol - 1].color == pieceColor)
                         {
-                            try { if (matrix[startRow, startCol - 3].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow, startCol + 1].color == 0) { return true; } } catch { }
-
+                            try { if (matrix[startRow, startCol - 3].color == 0 && matrix[startRow, startCol + 1].color == 0) { return true; } } catch { }
+  
                         }
                         // Means it is the left piece
                         else
                         {
-                            try { if (matrix[startRow, startCol + 3].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow, startCol - 1].color == 0) { return true; } } catch { }
+                            try { if (matrix[startRow, startCol + 3].color == 0 && matrix[startRow, startCol - 1].color == 0) { return true; } } catch { }
                         }
                     }
                     //Safety
                     return false;
-
                 }
                 // Tesera check
                 else
@@ -87,40 +80,37 @@ namespace Pente.GameLogic
                     // Means piece is the middle two pieces
                     if (matrix[startRow, startCol + 1].color == pieceColor && matrix[startRow, startCol - 1].color == pieceColor)
                     {
+                        // x X x x
                         //Means it is left middle
                         try { if (matrix[startRow, startCol + 2].color == pieceColor) 
                         {
-                            try { if (matrix[startRow, startCol + 3].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow, startCol - 2].color == 0) { return true; } } catch { }
-
+                            try { if (matrix[startRow, startCol + 3].color == 0 && matrix[startRow, startCol - 2].color == 0) { return true; } } catch { }
                         } } catch { }
 
+                        // x x X x
                         //Means it is right middle
                         try
                         {
                             if (matrix[startRow, startCol + 2].color == pieceColor)
                             {
-                                try { if (matrix[startRow, startCol - 3].color == 0) { return true; } } catch { }
-                                try { if (matrix[startRow, startCol + 2].color == 0) { return true; } } catch { }
-
+                                try { if (matrix[startRow, startCol - 3].color == 0 && matrix[startRow, startCol + 2].color == 0) { return true; } } catch { }
                             }
                         }catch { }
                     }
                     // Means it is far left/right piece
                     else
                     {
+                        // x x x X
                         // Means it is the right piece
                         if (matrix[startRow, startCol - 1].color == pieceColor)
                         {
-                            try { if (matrix[startRow, startCol - 4].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow, startCol + 1].color == 0) { return true; } } catch { }
-
+                            try { if (matrix[startRow, startCol - 4].color == 0 && matrix[startRow, startCol + 1].color == 0) { return true; } } catch { }
                         }
+                        // X x x x
                         // Means it is the left piece
                         else
                         {
-                            try { if (matrix[startRow, startCol + 4].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow, startCol - 1].color == 0) { return true; } } catch { }
+                            try { if (matrix[startRow, startCol + 4].color == 0 && matrix[startRow, startCol - 1].color == 0) { return true; } } catch { }
                         }
                     }
 
@@ -163,12 +153,8 @@ namespace Pente.GameLogic
                     if (matrix[startRow + 1, startCol].color == pieceColor && matrix[startRow - 1, startCol].color == pieceColor)
                     {
                         // Middle, any where on the board
-                        try { if (matrix[startRow - 2, startCol].color == 0) { return true; } } // if 2 left of the piece is 0 return true
-                        catch { if (matrix[startRow + 2, startCol].color == 0) { return true; } } // if checking 2 left of the piece is error means it is on the left edge so check right
-
-                        // Same as above but reflected horizontally
-                        try { if (matrix[startRow + 2, startCol].color == 0) { return true; } }
-                        catch { if (matrix[startRow - 2, startCol].color == 0) { return true; } }
+                        try { if (matrix[startRow - 2, startCol].color == 0 && matrix[startRow + 2, startCol].color == 0) { return true; } } // if 2 left of the piece is 0 return true
+                        catch { if (matrix[startRow + 2, startCol].color == 0 && matrix[startRow - 2, startCol].color == 0) { return true; } } // if checking 2 left of the piece is error means it is on the left edge so check right
                     }
                     // Means piece is not the middle piece
                     else
@@ -176,20 +162,17 @@ namespace Pente.GameLogic
                         // Means it is the right piece
                         if (matrix[startRow - 1, startCol].color == pieceColor)
                         {
-                            try { if (matrix[startRow - 3, startCol].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow + 1, startCol].color == 0) { return true; } } catch { }
+                            try { if (matrix[startRow - 3, startCol].color == 0 && matrix[startRow + 1, startCol].color == 0) { return true; } } catch { }
 
                         }
                         // Means it is the left piece
                         else
                         {
-                            try { if (matrix[startRow + 3, startCol].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow - 1, startCol].color == 0) { return true; } } catch { }
+                            try { if (matrix[startRow + 3, startCol].color == 0 && matrix[startRow - 1, startCol].color == 0) { return true; } } catch { }
                         }
                     }
                     //Safety
                     return false;
-
                 }
                 // Tesera check
                 else
@@ -205,26 +188,24 @@ namespace Pente.GameLogic
                     // Means piece is the middle two pieces
                     if (matrix[startRow + 1, startCol].color == pieceColor && matrix[startRow - 1, startCol].color == pieceColor)
                     {
+                        // x X x x
                         //Means it is left middle
                         try
                         {
-                            if (matrix[startRow, startCol + 2].color == pieceColor)
+                            if (matrix[startRow + 2, startCol].color == pieceColor)
                             {
-                                try { if (matrix[startRow + 3, startCol].color == 0) { return true; } } catch { }
-                                try { if (matrix[startRow - 2, startCol].color == 0) { return true; } } catch { }
-
+                                try { if (matrix[startRow + 3, startCol].color == 0 && matrix[startRow - 2, startCol].color == 0) { return true; } } catch { }
                             }
                         }
                         catch { }
 
+                        // x x X x
                         //Means it is right middle
                         try
                         {
                             if (matrix[startRow + 2, startCol].color == pieceColor)
                             {
-                                try { if (matrix[startRow - 3, startCol].color == 0) { return true; } } catch { }
-                                try { if (matrix[startRow + 2, startCol].color == 0) { return true; } } catch { }
-
+                                try { if (matrix[startRow - 3, startCol].color == 0 && matrix[startRow + 2, startCol].color == 0) { return true; } } catch { }
                             }
                         }
                         catch { }
@@ -232,18 +213,17 @@ namespace Pente.GameLogic
                     // Means it is far left/right piece
                     else
                     {
+                        // x x x X
                         // Means it is the right piece
                         if (matrix[startRow - 1, startCol].color == pieceColor)
                         {
-                            try { if (matrix[startRow - 4, startCol].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow + 1, startCol].color == 0) { return true; } } catch { }
-
+                            try { if (matrix[startRow - 4, startCol].color == 0 && matrix[startRow + 1, startCol].color == 0) { return true; } } catch { }
                         }
+                        // X x x x
                         // Means it is the left piece
                         else
                         {
-                            try { if (matrix[startRow + 4, startCol].color == 0) { return true; } } catch { }
-                            try { if (matrix[startRow - 1, startCol].color == 0) { return true; } } catch { }
+                            try { if (matrix[startRow + 4, startCol].color == 0 && matrix[startRow - 1, startCol].color == 0) { return true; } } catch { }
                         }
                     }
 
