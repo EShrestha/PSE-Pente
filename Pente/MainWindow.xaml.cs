@@ -24,6 +24,7 @@ namespace Pente
     public partial class MainWindow : Window
     {
         PlayWindow playWindow;
+        int numOfPlayers = 1;
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace Pente
         private void playBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
-            playWindow = new PlayWindow(2, this);
+            playWindow = new PlayWindow(numOfPlayers, this);
             playWindow.Show();
         }
 
@@ -52,6 +53,24 @@ namespace Pente
                 playWindow.Close();
         }
 
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            numOfPlayers = 1;
+        }
 
+        private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+        {
+            numOfPlayers = 2;
+        }
+
+        private void RadioButton_Checked_2(object sender, RoutedEventArgs e)
+        {
+            numOfPlayers = 3;
+        }
+
+        private void RadioButton_Checked_3(object sender, RoutedEventArgs e)
+        {
+            numOfPlayers = 4;
+        }
     }
 }

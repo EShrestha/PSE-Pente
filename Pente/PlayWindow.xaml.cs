@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Pente
 {
@@ -39,12 +41,14 @@ namespace Pente
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Stretch = Stretch.Fill,
             };
+            this.btn.IsEnabled = true;
         }
     }
-
+    
     public partial class PlayWindow : Window
     {
         Window mainWindow;
+        DispatcherTimer timer;
         private int numOfPlayers;
         private const int SCALE = 39;
         private const int WIDTH = 741;
@@ -58,6 +62,12 @@ namespace Pente
         Board b = new Board(hDs, wDs);
         public Cell[,] matrix;
         //public Cell[,] matrix = new Cell[hDs, wDs];
+
+        int lastUsersSpotX;
+        int lastUsersSpotY;
+        int[] numOfCapturesOfEachPlayer = { 0, 0, 0, 0 };
+        int turnSecondsElapsed = 0;
+        int maxTurnTime = 30;
 
      
         public PlayWindow( int players, Window sentWindow=null)
@@ -113,7 +123,6 @@ namespace Pente
                     {
                         btn.Content = new Image
                         {
-
                             Source = new BitmapImage(new Uri("/Resources/crossSpecial.png", UriKind.RelativeOrAbsolute)),
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Center,
@@ -133,7 +142,6 @@ namespace Pente
                     }
 
 
-
                     Cell cell = new Cell(btn);
                     matrix[i, j] = cell;
 
@@ -146,6 +154,11 @@ namespace Pente
                 }
 
             }
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.IsEnabled = true;
+            timer.Tick += new EventHandler(onTime); ;
         }
 
         //Event that runs for any button on the board that is clicked
@@ -168,13 +181,36 @@ namespace Pente
                     Stretch = Stretch.Fill,
                 };
 
-                if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,5)) { MessageBox.Show($"{color} won the game!!!"); } // Checkin for game win;
+                if(boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, row, col, turn)) { numOfCapturesOfEachPlayer[turn - 1]++; if(numOfCapturesOfEachPlayer[turn - 1] >=5 ) { MessageBox.Show($"{color} won the game with 5 captures!!!"); } }
+                if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,5, true)) { MessageBox.Show($"{color} won the game!!!"); } // Checkin for game win;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesera!"); } // Checkin for tesera;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,3)) { MessageBox.Show($"{color} has a tria!"); } // Checkin for tria;
                 matrix[row, col].btn.IsEnabled = false;
+
+                lastUsersSpotX = row;
+                lastUsersSpotY = col;
                
             }
+
+            
+
+
+
         }
+        public void onTime(object sender, EventArgs e)
+        {
+            txtTimer.Content = $"{turnSecondsElapsed++}"; 
+            if(turnSecondsElapsed > maxTurnTime)
+            {
+                MessageBox.Show("You lost on time :(");
+                turnSecondsElapsed = 0;
+            }
+        }
+
+
+
+
+
 
 
 

@@ -40,16 +40,16 @@
             <StackPanel Grid.Row="0" HorizontalAlignment="Center">
                 <Label Padding="5" Content="# of players?" FontWeight="Bold"></Label>
                 <Viewbox Height="38">
-                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16" IsChecked="True">1</RadioButton>
+                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16" IsChecked="True" Checked="RadioButton_Checked">1</RadioButton>
                 </Viewbox>
                 <Viewbox Height="38">
-                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16">2</RadioButton>
+                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16" Checked="RadioButton_Checked_1">2</RadioButton>
                 </Viewbox>
                 <Viewbox Height="38">
-                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16">3</RadioButton>
+                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16" Checked="RadioButton_Checked_2">3</RadioButton>
                 </Viewbox>
                 <Viewbox Height="38">
-                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16">4</RadioButton>
+                    <RadioButton GroupName="numPlayers" Padding="5" FontSize="16" Checked="RadioButton_Checked_3">4</RadioButton>
                 </Viewbox>
             </StackPanel>
 

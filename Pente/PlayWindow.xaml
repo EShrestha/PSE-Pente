@@ -39,6 +39,8 @@
             </Style.Triggers>
 
         </Style>
+
+
     </Window.Resources>
 
 
@@ -50,17 +52,46 @@
             </MenuItem>
         </Menu>-->
 
+
+
         <!--<Grid x:Name="grid" Height="944" ShowGridLines="False" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center">-->
         <Grid x:Name="grid" Height="741" Width="741" ShowGridLines="False" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Top">
 
         </Grid>
-        
-        
+
+
         <!--<StackPanel Orientation="Horizontal" Height="79" VerticalAlignment="Top">
             <TextBlock Background="Black">hello</TextBlock>
             <TextBlock VerticalAlignment="Top" Height="50" Width="400" Background="Black">sfwehifuhwefhiowefhiwoefwifh</TextBlock>
             
         </StackPanel>-->
-      
+        <Grid Height="79" VerticalAlignment="Top">
+
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="28" FontWeight="Bold" Margin="13 0 0 0">
+                    Turn:
+                </Label>
+
+                <Image x:Name="turnImage" Source="Resources/cross.png" Margin="10 0 0 32" VerticalAlignment="Top" />
+            </WrapPanel>
+
+            <Label Grid.Column="1" x:Name="txtTimer" Content="00" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Margin="0 -16 0 0"/>
+
+            <WrapPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="28" FontWeight="Bold">
+                    Captures: 0
+                </Label>
+
+            </WrapPanel>
+
+        </Grid>
+
     </StackPanel>
 </Window>
