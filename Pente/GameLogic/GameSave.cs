@@ -11,12 +11,16 @@ namespace Pente.GameLogic
         public readonly int[,] matrix = new int[19,19];
         public List<Player> playersList;
         public Player currentPlayer;
+        public int lastX;
+        public int lastY;
 
-        public GameSave( ref Cell[,] m, List<Player> playersList, Player currentPlayer)
+        public GameSave( ref Cell[,] m, List<Player> playersList, Player currentPlayer, int lastX, int lastY)
         {
             storeMatrix(m);
             this.playersList = playersList;
             this.currentPlayer = currentPlayer;
+            this.lastX = lastX;
+            this.lastY = lastY;
         }
 
         void storeMatrix(Cell[,] m)

@@ -100,6 +100,8 @@ namespace Pente
             playersList = gs.playersList;
             currentPlayer = gs.currentPlayer;
             saveGamePath = filePath;
+            lastUsersSpotX = gs.lastX;
+            lastUsersSpotY = gs.lastY;
 
             matrix = b.getBoard();
             InitializeComponent();
@@ -351,7 +353,7 @@ namespace Pente
             string time = DateTime.Now.ToString("T");
             time = time.Replace(':', '-');
 
-            GameSave gs = new GameSave(ref matrix, playersList, currentPlayer);
+            GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
 
             IFormatter formatter = new BinaryFormatter();
             System.IO.Directory.CreateDirectory(@"\PenteGames");
