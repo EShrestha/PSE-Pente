@@ -90,7 +90,7 @@ namespace Pente.GameLogic
                         //Means it is right middle
                         try
                         {
-                            if (matrix[startRow, startCol + 2].color == pieceColor)
+                            if (matrix[startRow, startCol - 2].color == pieceColor)
                             {
                                 try { if (matrix[startRow, startCol - 3].color == 0 && matrix[startRow, startCol + 2].color == 0) { return true; } } catch { }
                             }
@@ -200,7 +200,7 @@ namespace Pente.GameLogic
                         //Means it is right middle
                         try
                         {
-                            if (matrix[startRow + 2, startCol].color == pieceColor)
+                            if (matrix[startRow - 2, startCol].color == pieceColor)
                             {
                                 try { if (matrix[startRow - 3, startCol].color == 0 && matrix[startRow + 2, startCol].color == 0) { return true; } } catch { }
                             }
@@ -481,6 +481,8 @@ namespace Pente.GameLogic
 
         public bool isCapture(ref Cell[,] matrix, int lastUsersSpotX, int lastUsersSpotY, int startRow, int startCol, int pieceColor)
         {
+
+            if(lastUsersSpotX == null || lastUsersSpotY == null) { return false; }
             // if current piece is not next to the last placed piece, no need to check
             if(Math.Abs(lastUsersSpotX-startRow) > 1 || Math.Abs(lastUsersSpotY - startCol) > 1) { return false; }
 
@@ -505,7 +507,7 @@ namespace Pente.GameLogic
         }
 
 
-        public bool aiMakeMove(ref Cell[,] matrix)
+        public bool aiMakeMove(ref Cell[,] matrix, int color)
         {
 
             return true; // should be false

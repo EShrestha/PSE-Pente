@@ -79,13 +79,13 @@
                     Turn:
                 </Label>
 
-                <Image x:Name="turnImage" Source="Resources/cross.png" Margin="10 0 0 32" VerticalAlignment="Top" />
+                <Image x:Name="turnImage" Source="Resources/White.png" Margin="10 0 0 32" VerticalAlignment="Top" />
             </WrapPanel>
 
-            <Label Grid.Column="1" x:Name="txtTimer" Content="00" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Margin="0 -16 0 0"/>
+            <Label Grid.Column="1" x:Name="txtTimer" Content="30" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="50" FontWeight="Bold" Margin="0 -16 0 0"/>
 
             <WrapPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Label HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="28" FontWeight="Bold">
+                <Label x:Name="txtCaptures" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="28" FontWeight="Bold">
                     Captures: 0
                 </Label>
 

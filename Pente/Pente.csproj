@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Black.png" />
+    <None Remove="Resources\Blue.png" />
     <None Remove="Resources\cross.png" />
     <None Remove="Resources\crossBlack.png" />
     <None Remove="Resources\crossBlue.png" />
@@ -15,10 +17,14 @@
     <None Remove="Resources\crossHover2.png" />
     <None Remove="Resources\crossSpecial.png" />
     <None Remove="Resources\crossWhite.png" />
+    <None Remove="Resources\Green.png" />
     <None Remove="Resources\icon.png" />
+    <None Remove="Resources\White.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Black.png" />
+    <Resource Include="Resources\Blue.png" />
     <Resource Include="Resources\cross.png" />
     <Resource Include="Resources\crossBlack.png" />
     <Resource Include="Resources\crossBlue.png" />
@@ -27,7 +33,13 @@
     <Resource Include="Resources\crossHover2.png" />
     <Resource Include="Resources\crossSpecial.png" />
     <Resource Include="Resources\crossWhite.png" />
+    <Resource Include="Resources\Green.png" />
     <Resource Include="Resources\icon.png" />
+    <Resource Include="Resources\White.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Game Saves\" />
   </ItemGroup>
 
 </Project>

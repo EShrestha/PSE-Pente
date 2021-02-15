@@ -1,6 +1,9 @@
 ﻿using Pente.GameLogic;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Timers;
 using System.Windows;
@@ -19,10 +22,12 @@ namespace Pente
     /// Interaction logic for PlayWindow.xaml
     /// </summary>
     /// 
+
+    [Serializable]
     public struct Cell
     {
         public Button btn;
-        public Byte color;
+        public int color;
 
         public Cell(Button btn, Byte color = 0)
         {
@@ -44,7 +49,8 @@ namespace Pente
             this.btn.IsEnabled = true;
         }
     }
-    
+
+
     public partial class PlayWindow : Window
     {
         Window mainWindow;
@@ -59,6 +65,7 @@ namespace Pente
         public byte turn = 1;
         BoardLogic boardLogic = new BoardLogic();
 
+
         Board b = new Board(hDs, wDs);
         public Cell[,] matrix;
         //public Cell[,] matrix = new Cell[hDs, wDs];
@@ -66,14 +73,20 @@ namespace Pente
         int lastUsersSpotX;
         int lastUsersSpotY;
         int[] numOfCapturesOfEachPlayer = { 0, 0, 0, 0 };
-        int turnSecondsElapsed = 0;
         int maxTurnTime = 30;
+        int turnSecondsElapsed;
+        List<Player> playersList;
+        Player currentPlayer;
+        bool gameFinished = false;
+        string saveGamePath = "";
 
      
-        public PlayWindow( int players, Window sentWindow=null)
+        public PlayWindow(List<Player> players, Window sentWindow=null)
         {
             mainWindow = sentWindow;
-            numOfPlayers = players;
+            numOfPlayers = players.Count;
+            playersList = players;
+            currentPlayer = playersList[0];
             matrix = b.getBoard();
 
             InitializeComponent();
@@ -81,11 +94,56 @@ namespace Pente
 
         }
 
+        public PlayWindow(GameSave gs, string filePath = "", Window sentWindow = null)
+        {
+            mainWindow = sentWindow;
+            playersList = gs.playersList;
+            currentPlayer = gs.currentPlayer;
+            saveGamePath = filePath;
+
+            matrix = b.getBoard();
+            InitializeComponent();
+            setupBoard();
+            setupBoardFromSave(gs.matrix);
+
+            int spot = currentPlayer.color;
+            string color = (spot == 1 ? "White" : (spot == 2) ? "Black" : (spot == 3) ? "Green" : (spot == 4) ? "Blue" : "");
+            turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{color}.png", UriKind.Relative));
+            txtCaptures.Content = $"Captures: {currentPlayer.numOfCaptures}";
+
+        }
+
+        // For tests only
         public PlayWindow()
         {
             matrix = b.getBoard();
             InitializeComponent();
             setupBoard();
+        }
+
+        public void setupBoardFromSave(int[,] mat)
+        {
+            for(int r = 0; r < matrix.GetLength(0); r++)
+            {
+                for (int c = 0; c < matrix.GetLength(1); c++)
+                {
+                    if(mat[r,c] != 0)
+                    {
+                        int spot = mat[r, c];
+                        //System.Diagnostics.Debug.WriteLine($"At {r},{c} color was {spot}");
+                        string color = (spot == 1 ? "White" : (spot == 2) ? "Black" : (spot == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
+                        matrix[r, c].color = spot;
+                        matrix[r,c].btn.Content = new Image
+                        {
+                            Source = new BitmapImage(new Uri($"/Resources/cross{color}.png", UriKind.RelativeOrAbsolute)),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            Stretch = Stretch.Fill,
+                        };
+                        matrix[r, c].btn.IsEnabled = false;
+                    }
+                }
+            }
         }
 
         public void setupBoard()
@@ -155,6 +213,8 @@ namespace Pente
 
             }
 
+
+            turnSecondsElapsed = maxTurnTime;
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1000);
             timer.IsEnabled = true;
@@ -164,16 +224,21 @@ namespace Pente
         //Event that runs for any button on the board that is clicked
         private void btn_Event(object sender, RoutedEventArgs e)
         {
+            if (gameFinished) return;
             Button cell = (sender as Button);
             int row = Grid.GetRow(cell);
             int col = Grid.GetColumn(cell);
             if (matrix[row,col].color==0) // 0 means no color
             {
-                string color = (turn == 1 ? "White" : (turn == 2) ? "Black" : (turn == 3) ? "Green" : "Blue"); // Setting color
-                if(turn != numOfPlayers) { turn++; } else { turn=1; } // Incrementing turn
+                string name = currentPlayer.name;
+                int turn = currentPlayer.color;
+                string color = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : ""); // Setting color
+                //System.Diagnostics.Debug.WriteLine($"Current player color: {turn} - {color}");
+                
                 matrix[row,col].color = turn; // Players turn number represents color
-                // Updating button image with the players color
-                matrix[row,col].btn.Content = new Image
+                                              // Updating button image with the players color
+
+                matrix[row, col].btn.Content = new Image
                 {
                     Source = new BitmapImage(new Uri($"/Resources/cross{color}.png", UriKind.RelativeOrAbsolute)),
                     VerticalAlignment = VerticalAlignment.Center,
@@ -181,15 +246,33 @@ namespace Pente
                     Stretch = Stretch.Fill,
                 };
 
-                if(boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, row, col, turn)) { numOfCapturesOfEachPlayer[turn - 1]++; if(numOfCapturesOfEachPlayer[turn - 1] >=5 ) { MessageBox.Show($"{color} won the game with 5 captures!!!"); } }
-                if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,5, true)) { MessageBox.Show($"{color} won the game!!!"); } // Checkin for game win;
-                else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,4)) { MessageBox.Show($"{color} has a tesera!"); } // Checkin for tesera;
-                else if(boardLogic.xPiecesInSuccession(matrix,row,col,turn,3)) { MessageBox.Show($"{color} has a tria!"); } // Checkin for tria;
+
+                if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, row, col, turn)) { currentPlayer.numOfCaptures++; if(currentPlayer.numOfCaptures >=5 ) { MessageBox.Show($"{name} won the game with 5 captures!!!"); postWin(); } }
+                if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 5, true)) { MessageBox.Show($"{name} won the game!!!"); postWin(); } // Checkin for game win;
+                else if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 4)) { MessageBox.Show($"{name} has a tesera!"); } // Checkin for tesera;
+                else if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 3)) { MessageBox.Show($"{name} has a tria!"); } // Checkin for tria;
+
+
+                matrix[row, col].btn.Content = new Image
+                {
+                    Source = new BitmapImage(new Uri($"/Resources/cross{color}.png", UriKind.RelativeOrAbsolute)),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Stretch = Stretch.Fill,
+                };
+
                 matrix[row, col].btn.IsEnabled = false;
 
                 lastUsersSpotX = row;
                 lastUsersSpotY = col;
-               
+                turnSecondsElapsed = maxTurnTime;
+
+
+                updateCurrentPlayer();
+                string colorNext = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
+                turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{colorNext}.png", UriKind.Relative));
+                txtCaptures.Content = $"Captures: {currentPlayer.numOfCaptures}";
+
             }
 
             
@@ -197,31 +280,108 @@ namespace Pente
 
 
         }
-        public void onTime(object sender, EventArgs e)
+
+
+        void postWin()
         {
-            txtTimer.Content = $"{turnSecondsElapsed++}"; 
-            if(turnSecondsElapsed > maxTurnTime)
+            timer.Stop();
+            gameFinished = true;
+        }
+
+
+        void updateCurrentPlayer()
+        {
+            if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
             {
-                MessageBox.Show("You lost on time :(");
-                turnSecondsElapsed = 0;
+                currentPlayer = playersList[0];
+            }
+            else
+            {
+                currentPlayer = playersList[playersList.IndexOf(currentPlayer) + 1];
             }
         }
 
 
+        public void onTime(object sender, EventArgs e)
+        {
+            if (currentPlayer.isAi) { boardLogic.aiMakeMove(ref matrix, currentPlayer.color); }
+            txtTimer.Content = $"{turnSecondsElapsed--}"; 
+            if(turnSecondsElapsed < 0)
+            {
+                MessageBox.Show($"{currentPlayer.name} lost on time :(");
+                Player temp;
+                if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
+                {
+                    temp = playersList[0];
+                }
+                else
+                {
+                    temp = playersList[playersList.IndexOf(currentPlayer) + 1];
+                }
+                playersList.Remove(currentPlayer);
+                currentPlayer = temp;
+                if (playersList.Count == 1)
+                {
+                    MessageBox.Show($"{playersList[0].name} won the game!!!");
+                    postWin();
+                }
+
+                turnSecondsElapsed = maxTurnTime;
+            }
+        }
+
+        bool askToClose()
+        {
+            if (MessageBox.Show("Do you really want to exit?", "Yes", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                if(MessageBox.Show("Would you like to save the game?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    saveGame();
+                }
+
+                timer.Stop();
+                return true;
+            }
+            return false;
+        }
 
 
+        void saveGame()
+        {
+            string time = DateTime.Now.ToString("T");
+            time = time.Replace(':', '-');
 
+            GameSave gs = new GameSave(ref matrix, playersList, currentPlayer);
 
+            IFormatter formatter = new BinaryFormatter();
+            System.IO.Directory.CreateDirectory(@"\PenteGames");
+            string path = saveGamePath.Equals("") ? @$"\PenteGames\{time}.pente" : saveGamePath;
+            Stream stream = new FileStream(@$"{path}", FileMode.Create, FileAccess.Write);
+
+            formatter.Serialize(stream, gs);
+            stream.Close();
+        }
 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            mainWindow.Show();
+            if (!gameFinished)
+            {
+                if (!askToClose()) { e.Cancel = true; }
+                else { mainWindow.Show(); }
+            }
+            else
+            {
+                mainWindow.Show();
+            }
+            
+            
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
 
+            playersList.Clear();
         }
 
         private void Run_Click(object sender, RoutedEventArgs e)
