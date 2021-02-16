@@ -33,7 +33,7 @@ namespace Pente.NUnitTest
             // Arrange
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
-            Cell[,] mat = b.getBoard();
+            Cell[,] mat = b.getBoard(); 
 
             // Act
             //bool isValid = bl.aiMakeMove(ref mat);
@@ -208,7 +208,7 @@ namespace Pente.NUnitTest
             //bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
-            // Assert.AreEqual(true, isCap);
+           // Assert.AreEqual(true, isCap);
         }
 
         [Test]
@@ -226,10 +226,10 @@ namespace Pente.NUnitTest
             int startCol = 3;
 
             // Act
-            // bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
+           // bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
-            // Assert.AreEqual(true, isCap);
+           // Assert.AreEqual(true, isCap);
         }
 
 
@@ -299,25 +299,6 @@ namespace Pente.NUnitTest
             Assert.AreEqual(true, isWin);
         }
 
-        [Test]
-        public void serializeBoard_successful_true()
-        {
-            PlayWindow w = new PlayWindow();
-            w.setupBoard();
-            w.matrix[0, 0].color = 2;
-            w.matrix[4, 5].color = 1;
-            w.matrix[4, 4].color = 4;
-            w.matrix[4, 6].color = 1;
-            w.matrix[13, 4].color = 3;
-            w.matrix[3, 11].color = 2;
-            w.matrix[6, 6].color = 3;
-            w.matrix[7, 6].color = 3;
-            w.matrix[8, 6].color = 3;
-
-            bool isSaved = w.saveGame();
-
-            Assert.AreEqual(true, )
-        }
 
 
     }
