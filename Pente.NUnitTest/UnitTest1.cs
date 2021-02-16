@@ -280,6 +280,16 @@ namespace Pente.NUnitTest
         [Test]
         public void xPiecesInSuccession_winDiagonal_true()
         {
+
+
+            PlayWindow window = new PlayWindow();
+            window.setupBoard();
+            window.matrix[0, 0].color = 1;
+
+            
+
+
+
             // Arrange
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
