@@ -348,7 +348,7 @@ namespace Pente
         }
 
 
-        void saveGame()
+        public void saveGame()
         {
             string time = DateTime.Now.ToString("T");
             time = time.Replace(':', '-');
