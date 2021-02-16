@@ -151,6 +151,7 @@ namespace Pente
         public void setupBoard()
         {
 
+
             // Adding rows and columns in the grid
             for (int i = 0; i < hDs; i++)
             {
@@ -201,6 +202,7 @@ namespace Pente
                         };
                     }
 
+                    btn.ToolTip = "You sure you want to place it here??";
 
                     Cell cell = new Cell(btn);
                     matrix[i, j] = cell;
@@ -212,7 +214,6 @@ namespace Pente
 
                     btnCount++;
                 }
-
             }
 
 
@@ -235,8 +236,8 @@ namespace Pente
                 string name = currentPlayer.name;
                 int turn = currentPlayer.color;
                 string color = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : ""); // Setting color
-                //System.Diagnostics.Debug.WriteLine($"Current player color: {turn} - {color}");
-                
+                                                                                                                                                                                              //System.Diagnostics.Debug.WriteLine($"Current player color: {turn} - {color}");
+
                 matrix[row,col].color = turn; // Players turn number represents color
                                               // Updating button image with the players color
 
@@ -306,7 +307,35 @@ namespace Pente
 
         public void onTime(object sender, EventArgs e)
         {
-            if (currentPlayer.isAi) { boardLogic.aiMakeMove(ref matrix, currentPlayer.color); }
+            if (currentPlayer.isAi) 
+            { 
+                (int x, int y) = boardLogic.aiMakeMove(ref matrix, currentPlayer.color, lastUsersSpotX, lastUsersSpotY); 
+                if (x + y != -2) 
+                { 
+                    lastUsersSpotX = x; lastUsersSpotY = y;
+                    if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 5, true)) { MessageBox.Show($"{currentPlayer.name} won the game!!!"); postWin(); } // Checkin for game win;
+                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 4)) { MessageBox.Show($"{currentPlayer.name} has a tesera!"); } // Checkin for tesera;
+                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 3)) { MessageBox.Show($"{currentPlayer.name} has a tria!"); } // Checkin for tria;
+
+                    matrix[x, y].btn.IsEnabled = false;
+
+                    lastUsersSpotX = x;
+                    lastUsersSpotY = y;
+                    turnSecondsElapsed = maxTurnTime;
+
+
+                    updateCurrentPlayer();
+                    string colorNext = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
+                    turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{colorNext}.png", UriKind.Relative));
+                    txtCaptures.Content = $"Captures: {currentPlayer.numOfCaptures}";
+
+                }
+                else 
+                { 
+                    MessageBox.Show("Something went wrong with the AI"); 
+                } 
+            }
+
             txtTimer.Content = $"{turnSecondsElapsed--}"; 
             if(turnSecondsElapsed < 0)
             {
@@ -338,7 +367,7 @@ namespace Pente
             {
                 if(MessageBox.Show("Would you like to save the game?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    saveGame();
+                    if (saveGame()) { MessageBox.Show("Game saved!"); }
                 }
 
                 timer.Stop();
@@ -348,20 +377,29 @@ namespace Pente
         }
 
 
-        void saveGame()
+        public bool saveGame()
         {
-            string time = DateTime.Now.ToString("T");
-            time = time.Replace(':', '-');
+            try
+            {
 
-            GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
+                string time = DateTime.Now.ToString("T");
+                time = time.Replace(':', '-');
 
-            IFormatter formatter = new BinaryFormatter();
-            System.IO.Directory.CreateDirectory(@"\PenteGames");
-            string path = saveGamePath.Equals("") ? @$"\PenteGames\{time}.pente" : saveGamePath;
-            Stream stream = new FileStream(@$"{path}", FileMode.Create, FileAccess.Write);
+                GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
 
-            formatter.Serialize(stream, gs);
-            stream.Close();
+                IFormatter formatter = new BinaryFormatter();
+                System.IO.Directory.CreateDirectory(@"\PenteGames");
+                string path = saveGamePath.Equals("") ? @$"\PenteGames\{time}.pente" : saveGamePath;
+                Stream stream = new FileStream(@$"{path}", FileMode.Create, FileAccess.Write);
+
+                formatter.Serialize(stream, gs);
+                stream.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

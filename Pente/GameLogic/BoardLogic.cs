@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 
 namespace Pente.GameLogic
@@ -482,7 +487,7 @@ namespace Pente.GameLogic
         public bool isCapture(ref Cell[,] matrix, int lastUsersSpotX, int lastUsersSpotY, int startRow, int startCol, int pieceColor)
         {
 
-            if(lastUsersSpotX == null || lastUsersSpotY == null) { return false; }
+            
             // if current piece is not next to the last placed piece, no need to check
             if(Math.Abs(lastUsersSpotX-startRow) > 1 || Math.Abs(lastUsersSpotY - startCol) > 1) { return false; }
 
@@ -507,10 +512,34 @@ namespace Pente.GameLogic
         }
 
 
-        public bool aiMakeMove(ref Cell[,] matrix, int color)
-        {
 
-            return true; // should be false
+        public (int x, int y) aiMakeMove(ref Cell[,] matrix, int color, int lastX, int lastY)
+        {
+            System.Diagnostics.Debug.WriteLine($"Color:{color} is an ai.");
+            string clr = (color == 1 ? "White" : (color == 2) ? "Black" : (color == 3) ? "Green" : (color == 4) ? "Blue" : ""); // Setting color
+
+
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {
+                for(int col = 0; col < matrix.GetLength(1); col++)
+                {
+                    if(matrix[row,col].color == 0)
+                    {
+                        matrix[row,col].btn.Content = new Image
+                        {
+                            Source = new BitmapImage(new Uri($"/Resources/cross{clr}.png", UriKind.RelativeOrAbsolute)),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            Stretch = Stretch.Fill,
+                        };
+                        isCapture(ref matrix, lastX, lastY, row, col, color);
+                        return (row, col);
+                    }
+                }
+            }
+            return (-1, -1); // Means Ai failed to find a move
+
+
         }
 
 
