@@ -280,16 +280,6 @@ namespace Pente.NUnitTest
         [Test]
         public void xPiecesInSuccession_winDiagonal_true()
         {
-
-
-            PlayWindow window = new PlayWindow();
-            window.setupBoard();
-            window.matrix[0, 0].color = 1;
-
-            
-
-
-
             // Arrange
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
@@ -312,7 +302,6 @@ namespace Pente.NUnitTest
         [Test]
         public void serializeBoard_successful_true()
         {
-            //Arrange
             PlayWindow w = new PlayWindow();
             w.setupBoard();
             w.matrix[0, 0].color = 2;
@@ -325,12 +314,9 @@ namespace Pente.NUnitTest
             w.matrix[7, 6].color = 3;
             w.matrix[8, 6].color = 3;
 
-            //Act
             bool isSaved = w.saveGame();
 
-            //Assert
-            //true if the board is successfully serialized
-            Assert.AreEqual(true, isSaved);
+            Assert.AreEqual(true, )
         }
 
 
