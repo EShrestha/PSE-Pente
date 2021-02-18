@@ -33,7 +33,7 @@ namespace Pente.NUnitTest
             // Arrange
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
-            Cell[,] mat = b.getBoard(); 
+            Cell[,] mat = b.getBoard();
 
             // Act
             //bool isValid = bl.aiMakeMove(ref mat);
@@ -208,7 +208,7 @@ namespace Pente.NUnitTest
             //bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
-           // Assert.AreEqual(true, isCap);
+            // Assert.AreEqual(true, isCap);
         }
 
         [Test]
@@ -226,10 +226,10 @@ namespace Pente.NUnitTest
             int startCol = 3;
 
             // Act
-           // bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
+            // bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
 
             // Assert
-           // Assert.AreEqual(true, isCap);
+            // Assert.AreEqual(true, isCap);
         }
 
 
@@ -280,16 +280,6 @@ namespace Pente.NUnitTest
         [Test]
         public void xPiecesInSuccession_winDiagonal_true()
         {
-
-
-            PlayWindow window = new PlayWindow();
-            window.setupBoard();
-            window.matrix[0, 0].color = 1;
-
-            
-
-
-
             // Arrange
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
@@ -309,7 +299,30 @@ namespace Pente.NUnitTest
             Assert.AreEqual(true, isWin);
         }
 
+        [Test]
+        public void serializeBoard_success_true()
+        {
+            //Arrange
+            //setup board with a pretty random arrangement of pieces
+            PlayWindow p = new PlayWindow();
+            p.setupBoard();
+            p.matrix[0, 0].color = 1;
+            p.matrix[5, 7].color = 3;
+            p.matrix[0, 13].color = 3;
+            p.matrix[11, 2].color = 3;
+            p.matrix[10, 10].color = 2;
+            p.matrix[4, 9].color = 4;
+            p.matrix[4, 5].color = 1;
+            p.matrix[4, 6].color = 4;
+            p.matrix[4, 11].color = 2;
+            p.matrix[4, 0].color = 2;
+            p.matrix[4, 3].color = 3;
 
+            //Act
+            bool isSaved = p.saveGame();
 
-    }
+            //Assert
+            Assert.AreEqual(true, isSaved);
+        }
+    }  
 }
