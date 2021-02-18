@@ -484,7 +484,7 @@ namespace Pente.GameLogic
         }
 
 
-        public bool isCapture(ref Cell[,] matrix, int lastUsersSpotX, int lastUsersSpotY, int startRow, int startCol, int pieceColor)
+        public bool isCapture(ref Cell[,] matrix, int lastUsersSpotX, int lastUsersSpotY, int startRow, int startCol, int pieceColor, bool test = false)
         {
             if(lastUsersSpotX == startRow && lastUsersSpotY == startCol) { return false; }
             // if current piece is not next to the last placed piece, no need to check
@@ -497,15 +497,21 @@ namespace Pente.GameLogic
             // Checking edge
             try { var x = matrix[startRow+(3*xDir), startCol+(3*yDir)]; } catch { return false; }
 
-            // Means middle two pieces are of the same color so capture is true
-            if(matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != pieceColor && matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color != pieceColor
-                && matrix[startRow + (3 * xDir), startCol + (3 * yDir)].color == pieceColor)
-            {
-                // Removing middle pieces
-                matrix[startRow + (1 * xDir), startCol + (1 * yDir)].clearCell();
-                matrix[startRow + (2 * xDir), startCol + (2 * yDir)].clearCell();
-                return true;
-            }
+
+
+                // Means middle two pieces are of the same color so capture is true
+                if(matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != pieceColor && matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color != pieceColor
+                    && matrix[startRow + (3 * xDir), startCol + (3 * yDir)].color == pieceColor)
+                {
+                    if (!test)
+                    {
+                        matrix[startRow + (1 * xDir), startCol + (1 * yDir)].clearCell();
+                        matrix[startRow + (2 * xDir), startCol + (2 * yDir)].clearCell();
+                    }
+                    // Removing middle pieces
+                    return true;
+                }
+
 
             return false;
         }
