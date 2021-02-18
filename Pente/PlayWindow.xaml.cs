@@ -231,15 +231,14 @@ namespace Pente
             Button cell = (sender as Button);
             int row = Grid.GetRow(cell);
             int col = Grid.GetColumn(cell);
-            if (matrix[row,col].color==0) // 0 means no color
+            if (matrix[row,col].color==0 && !currentPlayer.isAi) // 0 means no color
             {
                 string name = currentPlayer.name;
                 int turn = currentPlayer.color;
                 string color = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : ""); // Setting color
                                                                                                                                                                                               //System.Diagnostics.Debug.WriteLine($"Current player color: {turn} - {color}");
 
-                matrix[row,col].color = turn; // Players turn number represents color
-                                              // Updating button image with the players color
+                this.matrix[row,col].color = turn; // Players turn number represents color
 
                 matrix[row, col].btn.Content = new Image
                 {
@@ -249,20 +248,10 @@ namespace Pente
                     Stretch = Stretch.Fill,
                 };
 
-
-                if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, row, col, turn)) { currentPlayer.numOfCaptures++; if(currentPlayer.numOfCaptures >=5 ) { MessageBox.Show($"{name} won the game with 5 captures!!!"); postWin(); } }
-                if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 5, true)) { MessageBox.Show($"{name} won the game!!!"); postWin(); } // Checkin for game win;
+                if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, row, col, turn)) { currentPlayer.numOfCaptures++; if(currentPlayer.numOfCaptures >=5 ) { timer.Stop();  MessageBox.Show($"{name} won the game with 5 captures!!!"); postWin(); } }
+                if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 5, true)) { timer.Stop(); MessageBox.Show($"{name} won the game!!!"); postWin(); } // Checkin for game win;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 4)) { MessageBox.Show($"{name} has a tesera!"); } // Checkin for tesera;
                 else if(boardLogic.xPiecesInSuccession(matrix,row,col, turn, 3)) { MessageBox.Show($"{name} has a tria!"); } // Checkin for tria;
-
-
-                matrix[row, col].btn.Content = new Image
-                {
-                    Source = new BitmapImage(new Uri($"/Resources/cross{color}.png", UriKind.RelativeOrAbsolute)),
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Stretch = Stretch.Fill,
-                };
 
                 matrix[row, col].btn.IsEnabled = false;
 
@@ -270,19 +259,17 @@ namespace Pente
                 lastUsersSpotY = col;
                 turnSecondsElapsed = maxTurnTime;
 
-
-                updateCurrentPlayer();
+                timer.Stop();
+                if (!gameFinished) {updateCurrentPlayer(); }
+                
                 string colorNext = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
                 turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{colorNext}.png", UriKind.Relative));
                 txtCaptures.Content = $"Captures: {currentPlayer.numOfCaptures}";
 
             }
 
-            
-
-
-
         }
+
 
 
         void postWin()
@@ -294,9 +281,12 @@ namespace Pente
 
         void updateCurrentPlayer()
         {
+            timer.Start();
             if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
             {
+               
                 currentPlayer = playersList[0];
+                
             }
             else
             {
@@ -305,52 +295,60 @@ namespace Pente
         }
 
 
+
         public void onTime(object sender, EventArgs e)
         {
-            if (currentPlayer.isAi) 
-            { 
-                (int x, int y) = boardLogic.aiMakeMove(ref matrix, currentPlayer.color, lastUsersSpotX, lastUsersSpotY); 
-                if (x + y != -2) 
-                { 
-                    lastUsersSpotX = x; lastUsersSpotY = y;
-                    if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 5, true)) { MessageBox.Show($"{currentPlayer.name} won the game!!!"); postWin(); } // Checkin for game win;
-                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 4)) { MessageBox.Show($"{currentPlayer.name} has a tesera!"); } // Checkin for tesera;
-                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 3)) { MessageBox.Show($"{currentPlayer.name} has a tria!"); } // Checkin for tria;
+
+            if (currentPlayer.isAi)
+            {
+                (int x, int y) = boardLogic.aiMakeMove(ref matrix, currentPlayer.color, lastUsersSpotX, lastUsersSpotY, timer);
+                if (x + y != -2)
+                {
+
+                    if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, x, y, turn)) { currentPlayer.numOfCaptures++; if (currentPlayer.numOfCaptures >= 5) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} won the game with 5 captures!!!"); postWin(); } }
+                    if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 5, true)) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} won the game!!!"); postWin(); } // Checkin for game win;
+                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 4)) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} has a tesera!"); } // Checkin for tesera;
+                    else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 3)) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} has a tria!"); } // Checkin for tria;
 
                     matrix[x, y].btn.IsEnabled = false;
+
 
                     lastUsersSpotX = x;
                     lastUsersSpotY = y;
                     turnSecondsElapsed = maxTurnTime;
 
-
-                    updateCurrentPlayer();
-                    string colorNext = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
-                    turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{colorNext}.png", UriKind.Relative));
+                    if (!gameFinished) {  updateCurrentPlayer();}
+                   
+                    string colorNxt = (currentPlayer.color == 1 ? "White" : (currentPlayer.color == 2) ? "Black" : (currentPlayer.color == 3) ? "Green" : (currentPlayer.color == 4) ? "Blue" : "");
+                    turnImage.Source = new BitmapImage(new Uri(@$"/Resources/{colorNxt}.png", UriKind.Relative));
                     txtCaptures.Content = $"Captures: {currentPlayer.numOfCaptures}";
 
+
                 }
-                else 
-                { 
-                    MessageBox.Show("Something went wrong with the AI"); 
-                } 
+                else
+                {
+                    MessageBox.Show("Something went wrong with the AI");
+
+                }
             }
+
 
             txtTimer.Content = $"{turnSecondsElapsed--}"; 
             if(turnSecondsElapsed < 0)
             {
-                MessageBox.Show($"{currentPlayer.name} lost on time :(");
-                Player temp;
-                if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
-                {
-                    temp = playersList[0];
-                }
-                else
-                {
-                    temp = playersList[playersList.IndexOf(currentPlayer) + 1];
-                }
-                playersList.Remove(currentPlayer);
-                currentPlayer = temp;
+                MessageBox.Show($"{currentPlayer.name} missed their turn :(");
+                //Player temp;
+                //if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
+                //{
+                //    temp = playersList[0];
+                //}
+                //else
+                //{
+                //    temp = playersList[playersList.IndexOf(currentPlayer) + 1];
+                //}
+                //playersList.Remove(currentPlayer);
+                //currentPlayer = temp;
+                updateCurrentPlayer();
                 if (playersList.Count == 1)
                 {
                     MessageBox.Show($"{playersList[0].name} won the game!!!");
