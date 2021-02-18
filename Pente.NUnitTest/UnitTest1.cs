@@ -167,52 +167,6 @@ namespace Pente.NUnitTest
             Assert.AreEqual(true, isTesera);
         }
 
-
-
-
-        [Test]
-        public void isCapture_capHorizontal_true()
-        {
-            // Arrange
-            BoardLogic bl = new BoardLogic();
-            Board b = new Board(19, 19);
-            Cell[,] mat = b.getBoard();
-            mat[0, 0].color = 1; // Adding white(1) piece to row 0 col 0
-            mat[0, 1].color = 2;
-            mat[0, 2].color = 2;
-            mat[0, 3].color = 1;
-            int lastX = 0;
-            int lastY = 2;
-            int startRow = 0;
-            int startCol = 3;
-
-            // Act
-            bool isCap = bl.isCapture(ref mat,lastX, lastY, startRow, startCol, 1);
-
-            // Assert
-            Assert.AreEqual(true, isCap);
-        }
-        [Test]
-        public void isCapture_capVertical_true()
-        {
-            // Arrange
-            BoardLogic bl = new BoardLogic();
-            Board b = new Board(19, 19);
-            Cell[,] mat = b.getBoard();
-            mat[0, 0].color = 1; // Adding white(1) piece to row 0 col 0
-            mat[1, 0].color = 2;
-            mat[2, 0].color = 2;
-            mat[3, 0].color = 1;
-            int startRow = 3;
-            int startCol = 0;
-
-            // Act
-            //bool isCap = bl.isCapture(ref mat, startRow, startCol, 1);
-
-            // Assert
-            // Assert.AreEqual(true, isCap);
-        }
-
         [Test]
         public void isCapture_capDiagonal_true()
         {
@@ -234,6 +188,52 @@ namespace Pente.NUnitTest
 
             // Assert
            Assert.AreEqual(true, isCap);
+        }
+
+        [Test]
+        public void isCapture_capVertical_true()
+        {
+            // Arrange
+            BoardLogic bl = new BoardLogic();
+            Board b = new Board(19, 19);
+            Cell[,] mat = b.getBoard();
+            mat[1, 0].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[2, 0].color = 2;
+            mat[3, 0].color = 2;
+            mat[4, 0].color = 1;
+            int lastX = 3;
+            int lastY = 0;
+            int startRow = 4;
+            int startCol = 0;
+
+            // Act
+            bool isCap = bl.isCapture(ref mat, lastX, lastY, startRow, startCol, 1, true);
+
+            // Assert
+            Assert.AreEqual(true, isCap);
+        }
+
+        [Test]
+        public void isCapture_capHorizontal_true()
+        {
+            // Arrange
+            BoardLogic bl = new BoardLogic();
+            Board b = new Board(19, 19);
+            Cell[,] mat = b.getBoard();
+            mat[0, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[0, 2].color = 2;
+            mat[0, 3].color = 2;
+            mat[0, 4].color = 1;
+            int lastX = 0;
+            int lastY = 3;
+            int startRow = 0;
+            int startCol = 4;
+
+            // Act
+            bool isCap = bl.isCapture(ref mat, lastX, lastY, startRow, startCol, 1, true);
+
+            // Assert
+            Assert.AreEqual(true, isCap);
         }
 
 
