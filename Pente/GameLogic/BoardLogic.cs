@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-
+using System.Windows.Threading;
 
 namespace Pente.GameLogic
 {
@@ -486,10 +486,9 @@ namespace Pente.GameLogic
 
         public bool isCapture(ref Cell[,] matrix, int lastUsersSpotX, int lastUsersSpotY, int startRow, int startCol, int pieceColor)
         {
-
-            
+            if(lastUsersSpotX == startRow && lastUsersSpotY == startCol) { return false; }
             // if current piece is not next to the last placed piece, no need to check
-            if(Math.Abs(lastUsersSpotX-startRow) > 1 || Math.Abs(lastUsersSpotY - startCol) > 1) { return false; }
+            if (Math.Abs(lastUsersSpotX-startRow) > 1 || Math.Abs(lastUsersSpotY - startCol) > 1) { return false; }
 
             // Getting x and y direction
             int xDir = lastUsersSpotX - startRow;
@@ -499,7 +498,7 @@ namespace Pente.GameLogic
             try { var x = matrix[startRow+(3*xDir), startCol+(3*yDir)]; } catch { return false; }
 
             // Means middle two pieces are of the same color so capture is true
-            if((matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color == matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color)
+            if(matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != pieceColor && matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color != pieceColor
                 && matrix[startRow + (3 * xDir), startCol + (3 * yDir)].color == pieceColor)
             {
                 // Removing middle pieces
@@ -513,33 +512,146 @@ namespace Pente.GameLogic
 
 
 
-        public (int x, int y) aiMakeMove(ref Cell[,] matrix, int color, int lastX, int lastY)
+        public (int x, int y) aiMakeMove(ref Cell[,] matrix, int color,int lastX, int lastY, DispatcherTimer timer)
         {
-            System.Diagnostics.Debug.WriteLine($"Color:{color} is an ai.");
-            string clr = (color == 1 ? "White" : (color == 2) ? "Black" : (color == 3) ? "Green" : (color == 4) ? "Blue" : ""); // Setting color
+            System.Diagnostics.Debug.WriteLine($"After enter 0,0 color is: {matrix[0, 0].color}");
 
+            var colRange = (Left: 0, Right: 0);
+            var rowRange = (Up: 0, Down: 0);
+            colRange.Left = lastY;
+            colRange.Right = matrix.GetLength(1) - lastY;            
+            rowRange.Up = lastX;
+            rowRange.Down = matrix.GetLength(0) - lastX;
+            int enemyColor = matrix[lastX, lastY].color;
 
-            for (int row = 0; row < matrix.GetLength(0); row++)
+            // Tria prevention
+            for (int rS = -1; rS <= 1; rS++)
             {
-                for(int col = 0; col < matrix.GetLength(1); col++)
+                for (int cS = -1; cS <= 1; cS++)
                 {
-                    if(matrix[row,col].color == 0)
+                    if (rS != 0 || cS != 0)
                     {
-                        matrix[row,col].btn.Content = new Image
+                        if (matrix[lastX + (1 * rS), lastY + (1 * cS)].color == enemyColor
+                                && matrix[lastX + (2 * rS), lastY + (2 * cS)].color == enemyColor)
                         {
-                            Source = new BitmapImage(new Uri($"/Resources/cross{clr}.png", UriKind.RelativeOrAbsolute)),
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            Stretch = Stretch.Fill,
-                        };
-                        isCapture(ref matrix, lastX, lastY, row, col, color);
-                        return (row, col);
+                            if (matrix[lastX + (3 * rS), lastY + (3 * cS)].color == 0)
+                            {
+                                WriteAiMove(ref matrix, lastX + (3 * rS), lastY + (3 * cS), color, ref lastX, ref lastY, timer);
+                                return (lastX + (3 * rS), lastY + (3 * cS));
+                            }
+                            else if (matrix[lastX + (-1 * rS), lastY + (-1 * cS)].color == 0)
+                            {
+                                WriteAiMove(ref matrix, lastX + (-1 * rS), lastY + (-1 * cS), color, ref lastX, ref lastY, timer);
+                                return (lastX + (-1 * rS), lastY + (-1 * cS));
+                            }
+                        }
                     }
                 }
             }
+
+            // Tesera prevention
+            for (int rS = -1; rS <= 1; rS++)
+            {
+                for (int cS = -1; cS <= 1; cS++)
+                {
+                    if (rS != 0 || cS != 0)
+                    {
+                        try
+                        {
+                            if (matrix[lastX + (1 * rS), lastY + (1 * cS)].color == enemyColor
+                                && matrix[lastX + (2 * rS), lastY + (2 * cS)].color == enemyColor
+                                && matrix[lastX + (3 * rS), lastY + (3 * cS)].color == enemyColor)
+                            {
+                                if (matrix[lastX + (4 * rS), lastY + (4 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (4 * rS), lastY + (4 * cS), color, ref lastX, ref lastY, timer);
+                                    return (lastX + (4 * rS), lastY + (4 * cS));
+                                }
+                                else if (matrix[lastX + (-1 * rS), lastY + (-1 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (-1 * rS), lastY + (-1 * cS), color, ref lastX, ref lastY, timer);
+                                    return (lastX + (-1 * rS), lastY + (-1 * cS));
+                                }
+
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            // Win prevention
+            for (int rS = -1; rS <= 1; rS++)
+            {
+                for (int cS = -1; cS <= 1; cS++)
+                {
+                    if (rS != 0 || cS != 0)
+                    {
+                        try
+                        {
+                            if (matrix[lastX + (1 * rS), lastY + (1 * cS)].color == enemyColor
+                                && matrix[lastX + (2 * rS), lastY + (2 * cS)].color == enemyColor
+                                && matrix[lastX + (3 * rS), lastY + (3 * cS)].color == enemyColor
+                                && matrix[lastX + (4 * rS), lastY + (4 * cS)].color == enemyColor)
+                            {
+                                if(matrix[lastX + (5 * rS), lastY + (5 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (3 * rS), lastY + (3 * cS), color, ref lastX, ref lastY, timer);
+                                    return (lastX + (3 * rS), lastY + (3 * cS));
+                                }
+                                else if(matrix[lastX + (-1 * rS), lastY + (-1 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (3 * rS), lastY + (3 * cS),  color, ref lastX, ref lastY, timer);
+                                    return (lastX + (3 * rS), lastY + (3 * cS));
+                                }
+                                
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+
+            timer.Stop();
+            for (int row = lastX; row > 0; row--)
+            {
+                for(int col = lastY; col > 0; col--)
+                {
+                    System.Diagnostics.Debug.Write($"Checking [{row},{col}] = {matrix[row, col].color} ");
+                    if (matrix[row, col].color == 0)
+                    {
+                        System.Diagnostics.Debug.Write($"WROTE IN HERE: [{row},{col}] = {matrix[row, col].color} ");
+                        WriteAiMove(ref matrix, row, col, color, ref lastX, ref lastY, timer);
+                        return (row, col);
+                    }
+                }
+                System.Diagnostics.Debug.WriteLine("C\n");
+            }
+            timer.Start();
             return (-1, -1); // Means Ai failed to find a move
 
 
+        }
+
+        // Writes the move of the ai to tthe board
+        void WriteAiMove(ref Cell[,] matrix, int row, int col, int color, ref int lastX, ref int lastY, DispatcherTimer timer)
+        {
+            string clr = (color == 1 ? "White" : (color == 2) ? "Black" : (color == 3) ? "Green" : (color == 4) ? "Blue" : "");
+            matrix[row, col].color = color;
+            System.Diagnostics.Debug.WriteLine($"[{row},{col}] has the color {matrix[row, col].color}");
+            matrix[row, col].btn.Content = new Image
+            {
+                Source = new BitmapImage(new Uri($"/Resources/cross{clr}.png", UriKind.RelativeOrAbsolute)),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Stretch = Stretch.Fill,
+            };
+            matrix[row, col].btn.IsEnabled = false;
+            lastX = row;
+            lastY = col;
+            timer.Start();
+  
         }
 
 
