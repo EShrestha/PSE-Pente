@@ -7,6 +7,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace Pente.GameLogic
 {
@@ -658,6 +661,32 @@ namespace Pente.GameLogic
             lastY = col;
             timer.Start();
   
+        }
+
+        public bool saveGame(ref Cell[,] matrix, List<Player> playersList, Player currentPlayer, int lastUsersSpotX, int lastUsersSpotY, string saveGamePath, bool test = false)
+        {
+            try
+            {
+                string time = DateTime.Now.ToString("T");
+
+                time = time.Replace(':', '-');
+
+
+                GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
+
+                IFormatter formatter = new BinaryFormatter();
+                System.IO.Directory.CreateDirectory(@"\PenteGames");
+                string path = saveGamePath.Equals("") ? @$"\PenteGames\{time}.pente" : saveGamePath;
+                Stream stream = new FileStream(@$"{path}", FileMode.Create, FileAccess.Write);
+
+                formatter.Serialize(stream, gs);
+                stream.Close();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 

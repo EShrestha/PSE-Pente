@@ -365,7 +365,7 @@ namespace Pente
             {
                 if(MessageBox.Show("Would you like to save the game?", "Save", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    if (saveGame()) { MessageBox.Show("Game saved!"); }
+                    if (boardLogic.saveGame(ref matrix,playersList,currentPlayer,lastUsersSpotX,lastUsersSpotY,saveGamePath)) { MessageBox.Show("Game saved!"); }
                 }
 
                 timer.Stop();
@@ -375,30 +375,7 @@ namespace Pente
         }
 
 
-        public bool saveGame()
-        {
-            try
-            {
-
-                string time = DateTime.Now.ToString("T");
-                time = time.Replace(':', '-');
-
-                GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
-
-                IFormatter formatter = new BinaryFormatter();
-                System.IO.Directory.CreateDirectory(@"\PenteGames");
-                string path = saveGamePath.Equals("") ? @$"\PenteGames\{time}.pente" : saveGamePath;
-                Stream stream = new FileStream(@$"{path}", FileMode.Create, FileAccess.Write);
-
-                formatter.Serialize(stream, gs);
-                stream.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        
 
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
