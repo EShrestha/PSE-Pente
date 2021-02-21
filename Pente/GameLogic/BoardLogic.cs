@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
@@ -524,7 +523,7 @@ namespace Pente.GameLogic
         public (int x, int y) aiMakeMove(ref Cell[,] matrix, int color,int lastX, int lastY, DispatcherTimer timer)
         {
             System.Diagnostics.Debug.WriteLine($"After enter 0,0 color is: {matrix[0, 0].color}");
-
+            
             var colRange = (Left: 0, Right: 0);
             var rowRange = (Up: 0, Down: 0);
             colRange.Left = lastY;
@@ -540,20 +539,24 @@ namespace Pente.GameLogic
                 {
                     if (rS != 0 || cS != 0)
                     {
-                        if (matrix[lastX + (1 * rS), lastY + (1 * cS)].color == enemyColor
-                                && matrix[lastX + (2 * rS), lastY + (2 * cS)].color == enemyColor)
+                        try
                         {
-                            if (matrix[lastX + (3 * rS), lastY + (3 * cS)].color == 0)
+                            if (matrix[lastX + (1 * rS), lastY + (1 * cS)].color == enemyColor
+                                    && matrix[lastX + (2 * rS), lastY + (2 * cS)].color == enemyColor)
                             {
-                                WriteAiMove(ref matrix, lastX + (3 * rS), lastY + (3 * cS), color, ref lastX, ref lastY, timer);
-                                return (lastX + (3 * rS), lastY + (3 * cS));
-                            }
-                            else if (matrix[lastX + (-1 * rS), lastY + (-1 * cS)].color == 0)
-                            {
-                                WriteAiMove(ref matrix, lastX + (-1 * rS), lastY + (-1 * cS), color, ref lastX, ref lastY, timer);
-                                return (lastX + (-1 * rS), lastY + (-1 * cS));
+                                if (matrix[lastX + (3 * rS), lastY + (3 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (3 * rS), lastY + (3 * cS), color, ref lastX, ref lastY, timer);
+                                    return (lastX + (3 * rS), lastY + (3 * cS));
+                                }
+                                else if (matrix[lastX + (-1 * rS), lastY + (-1 * cS)].color == 0)
+                                {
+                                    WriteAiMove(ref matrix, lastX + (-1 * rS), lastY + (-1 * cS), color, ref lastX, ref lastY, timer);
+                                    return (lastX + (-1 * rS), lastY + (-1 * cS));
+                                }
                             }
                         }
+                        catch { }
                     }
                 }
             }
@@ -643,7 +646,7 @@ namespace Pente.GameLogic
 
         }
 
-        // Writes the move of the ai to tthe board
+        // Writes the move of the ai to the board
         void WriteAiMove(ref Cell[,] matrix, int row, int col, int color, ref int lastX, ref int lastY, DispatcherTimer timer)
         {
             string clr = (color == 1 ? "White" : (color == 2) ? "Black" : (color == 3) ? "Green" : (color == 4) ? "Blue" : "");
@@ -667,11 +670,12 @@ namespace Pente.GameLogic
         {
             try
             {
+                // Save files name is the current time
                 string time = DateTime.Now.ToString("T");
 
                 time = time.Replace(':', '-');
 
-
+                // Creates a GameSave object to be serialized
                 GameSave gs = new GameSave(ref matrix, playersList, currentPlayer, lastUsersSpotX, lastUsersSpotY);
 
                 IFormatter formatter = new BinaryFormatter();

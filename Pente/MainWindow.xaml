@@ -64,7 +64,7 @@
             </StackPanel>
             <StackPanel Grid.Column="2" HorizontalAlignment="Center" Width="116">
                 <Label Padding="5" Content="AI?" FontWeight="Bold" Width="auto" HorizontalAlignment="Center"></Label>
-                <CheckBox IsEnabled="False" Height="37" Margin="0 8 0 0" x:Name="p1" Checked="p1_Checked" Content="Yes" HorizontalAlignment="Center"></CheckBox>
+                <CheckBox IsEnabled="False" Height="37" Margin="0 8 0 0" x:Name="p1" Checked="p1_Checked"  Content="Yes" HorizontalAlignment="Center"></CheckBox>
                 <CheckBox Height="37" x:Name="p2" Checked="p2_Checked"  Content="Yes" HorizontalAlignment="Center"></CheckBox>
                 <CheckBox Height="37" x:Name="p3" Checked="p3_Checked"  Content="Yes" HorizontalAlignment="Center"></CheckBox>
                 <CheckBox Height="37" x:Name="p4" Checked="p4_Checked"  Content="Yes" HorizontalAlignment="Center"></CheckBox>

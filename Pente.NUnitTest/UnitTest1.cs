@@ -52,7 +52,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[1, 2].color = 1;
             mat[1, 3].color = 1;
             int startRow = 1;
@@ -72,7 +72,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[1, 2].color = 1;
             mat[1, 3].color = 2;
             int startRow = 1;
@@ -92,7 +92,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 1].color = 1;
             mat[3, 1].color = 1;
             int startRow = 1;
@@ -112,7 +112,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 1].color = 1;
             mat[3, 1].color = 1;
             int startRow = 1;
@@ -132,7 +132,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             int startRow = 1;
@@ -152,7 +152,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             int startRow = 1;
@@ -172,7 +172,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[1, 2].color = 1;
             mat[1, 3].color = 1;
             mat[1, 4].color = 1;
@@ -193,7 +193,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[1, 2].color = 1;
             mat[1, 3].color = 1;
             mat[1, 4].color = 2;
@@ -215,7 +215,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 1].color = 1;
             mat[3, 1].color = 1;
             mat[4, 1].color = 1;
@@ -236,7 +236,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 1].color = 1;
             mat[3, 1].color = 1;
             mat[4, 1].color = 2;
@@ -257,7 +257,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             mat[4, 4].color = 1;
@@ -277,7 +277,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             mat[4, 4].color = 2;
@@ -298,7 +298,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 2;
             mat[3, 3].color = 2;
             mat[4, 4].color = 1;
@@ -321,7 +321,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 0].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 0].color = 1; // Adding white(1) piece to row 1 col 0
             mat[2, 0].color = 2;
             mat[3, 0].color = 2;
             mat[4, 0].color = 1;
@@ -344,7 +344,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[0, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[0, 1].color = 1; // Adding white(1) piece to row 0 col 1
             mat[0, 2].color = 2;
             mat[0, 3].color = 2;
             mat[0, 4].color = 1;
@@ -367,7 +367,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 2;
             mat[3, 3].color = 2;
             mat[4, 4].color = 1;
@@ -390,7 +390,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 0].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 0].color = 1; // Adding white(1) piece to row 1 col 0
             mat[2, 0].color = 2;
             mat[3, 0].color = 2;
             mat[4, 0].color = 1;
@@ -413,7 +413,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[0, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[0, 1].color = 1; // Adding white(1) piece to row 0 col 1
             mat[0, 2].color = 2;
             mat[0, 3].color = 2;
             mat[0, 4].color = 1;
@@ -526,7 +526,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             mat[4, 4].color = 1;
@@ -549,7 +549,7 @@ namespace Pente.NUnitTest
             BoardLogic bl = new BoardLogic();
             Board b = new Board(19, 19);
             Cell[,] mat = b.getBoard();
-            mat[1, 1].color = 1; // Adding white(1) piece to row 0 col 0
+            mat[1, 1].color = 1; // Adding white(1) piece to row 1 col 1
             mat[2, 2].color = 1;
             mat[3, 3].color = 1;
             mat[4, 4].color = 1;
