@@ -26,7 +26,7 @@ namespace Pente.GameLogic
             //// Horizontal
             while (count != 2)
             {
-                for (int col = startCol; (col - 1 >= -1 && col < matrix.GetLength(1) && Math.Abs(startCol - col) <= numOfPieces); col += prefix)
+                for (int col = startCol; (col - 1 >= 0 && col < matrix.GetLength(1) && Math.Abs(startCol - col) <= numOfPieces); col += prefix)
                 {
                     if (matrix[startRow, col].color == pieceColor) { pieceCount++; } else { break; }
                 }
@@ -132,9 +132,13 @@ namespace Pente.GameLogic
             while (count != 2)
             {
                 //// Vertical 
-                for (int row = startRow; (row - 1 >= -1 && row < matrix.GetLength(0) && Math.Abs(startRow - row) <= numOfPieces); row += prefix)
+                for (int row = startRow; (row - 1 >= 0 && row < matrix.GetLength(0) && Math.Abs(startRow - row) <= numOfPieces); row += prefix)
                 {
-                    if (matrix[row, startCol].color == pieceColor) { pieceCount++; } else { break; }
+                    try
+                    {
+                        if (matrix[row, startCol].color == pieceColor) { pieceCount++; } else { break; }
+                    }
+                    catch { }
                 }
                 count++;
                 prefix *= -1;
@@ -502,8 +506,10 @@ namespace Pente.GameLogic
 
 
                 // Means middle two pieces are of the same color so capture is true
-                if(matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != pieceColor && matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color != pieceColor
-                    && matrix[startRow + (3 * xDir), startCol + (3 * yDir)].color == pieceColor)
+                if(matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != pieceColor 
+                && matrix[startRow + (1 * xDir), startCol + (1 * yDir)].color != 0 
+                && matrix[startRow + (2 * xDir), startCol + (2 * yDir)].color != 0
+                && matrix[startRow + (3 * xDir), startCol + (3 * yDir)].color == pieceColor)
                 {
                     if (!test)
                     {
@@ -626,9 +632,9 @@ namespace Pente.GameLogic
 
 
             timer.Stop();
-            for (int row = lastX; row > 0; row--)
+            for (int row = lastX; row >= 0; row--)
             {
-                for(int col = lastY; col > 0; col--)
+                for(int col = lastY; col >= 0; col--)
                 {
                     System.Diagnostics.Debug.Write($"Checking [{row},{col}] = {matrix[row, col].color} ");
                     if (matrix[row, col].color == 0)

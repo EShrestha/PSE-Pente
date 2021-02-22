@@ -334,8 +334,8 @@ namespace Pente
                     matrix[x, y].btn.IsEnabled = false;
 
                     // Keeping track of coordinates
-                    lastUsersSpotX = x;
-                    lastUsersSpotY = y;
+                    //lastUsersSpotX = x;
+                    //lastUsersSpotY = y;
                     turnSecondsElapsed = maxTurnTime;
 
                     if (!gameFinished) {  updateCurrentPlayer();}
