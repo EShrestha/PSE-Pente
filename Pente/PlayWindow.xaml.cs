@@ -323,7 +323,7 @@ namespace Pente
             if (currentPlayer.isAi)
             {
                 (int x, int y) = boardLogic.aiMakeMove(ref matrix, currentPlayer.color, lastUsersSpotX, lastUsersSpotY, timer);
-                if (x + y != -38)
+                if (x + y != -38) // If not true, error has occured
                 {
                     // Doning checks for capture, win, tesera, and tria for ai
                     if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, x, y, currentPlayer.color)) { currentPlayer.numOfCaptures++; if (currentPlayer.numOfCaptures >= 5) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} won the game with 5 captures!!!"); postWin(); } }
@@ -349,6 +349,8 @@ namespace Pente
                 else
                 {
                     MessageBox.Show("Something went wrong with the AI");
+                    timer.Stop();
+                    updateCurrentPlayer();
 
                 }
             }
@@ -358,6 +360,7 @@ namespace Pente
             if(turnSecondsElapsed < 0) // Means the current player ran out of time
             {
                 MessageBox.Show($"{currentPlayer.name} missed their turn :(");
+                //// Not needed if just skipping turn if timer runs out 
                 //Player temp;
                 //if (playersList.IndexOf(currentPlayer) + 1 == playersList.Count)
                 //{
