@@ -647,7 +647,7 @@ namespace Pente.GameLogic
                 System.Diagnostics.Debug.WriteLine("C\n");
             }
             timer.Start();
-            return (-1, -1); // Means Ai failed to find a move
+            return (-19, -19); // Means Ai failed to find a move
 
 
         }

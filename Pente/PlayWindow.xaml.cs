@@ -323,7 +323,7 @@ namespace Pente
             if (currentPlayer.isAi)
             {
                 (int x, int y) = boardLogic.aiMakeMove(ref matrix, currentPlayer.color, lastUsersSpotX, lastUsersSpotY, timer);
-                if (x + y != -2)
+                if (x + y != -38)
                 {
                     // Doning checks for capture, win, tesera, and tria for ai
                     if (boardLogic.isCapture(ref matrix, lastUsersSpotX, lastUsersSpotY, x, y, currentPlayer.color)) { currentPlayer.numOfCaptures++; if (currentPlayer.numOfCaptures >= 5) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} won the game with 5 captures!!!"); postWin(); } }
