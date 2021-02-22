@@ -331,7 +331,7 @@ namespace Pente
                     else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 4)) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} has a tesera!"); } // Checkin for tesera;
                     else if (boardLogic.xPiecesInSuccession(matrix, x, y, currentPlayer.color, 3)) { timer.Stop(); MessageBox.Show($"{currentPlayer.name} has a tria!"); } // Checkin for tria;
 
-                    matrix[x, y].btn.IsEnabled = false;
+                    //matrix[x, y].btn.IsEnabled = false;
 
                     // Keeping track of coordinates
                     //lastUsersSpotX = x;
@@ -348,9 +348,9 @@ namespace Pente
                 }
                 else
                 {
-                    MessageBox.Show("Something went wrong with the AI");
                     timer.Stop();
                     updateCurrentPlayer();
+                    MessageBox.Show("Something went wrong with the AI");
 
                 }
             }

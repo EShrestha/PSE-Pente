@@ -646,6 +646,21 @@ namespace Pente.GameLogic
                 }
                 System.Diagnostics.Debug.WriteLine("C\n");
             }
+            //Going down
+            for (int row = lastX; row < matrix.GetLength(0); row++)
+            {
+                for (int col = lastY; col < matrix.GetLength(1); col++)
+                {
+                    System.Diagnostics.Debug.Write($"Checking [{row},{col}] = {matrix[row, col].color} ");
+                    if (matrix[row, col].color == 0)
+                    {
+                        System.Diagnostics.Debug.Write($"WROTE IN HERE: [{row},{col}] = {matrix[row, col].color} ");
+                        WriteAiMove(ref matrix, row, col, color, ref lastX, ref lastY, timer);
+                        return (row, col);
+                    }
+                }
+                System.Diagnostics.Debug.WriteLine("C\n");
+            }
             timer.Start();
             return (-19, -19); // Means Ai failed to find a move
 
